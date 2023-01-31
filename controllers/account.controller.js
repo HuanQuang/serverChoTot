@@ -1,5 +1,6 @@
 import  account from '../modals/account.modal.js'
 import jwt from 'jsonwebtoken'
+import cloudinary from '../utils/cloudinary.js';
 
 export const getAccount = async (req, res) => {
     try {
@@ -21,7 +22,48 @@ export const updateAccount = async (req, res) => {
         user: {
             id:newUpdate._id, 
             phone:newUpdate.phone, 
-            avatar: newUpdate.avatar, 
+            avatar: newUpdate.avatar.url, 
+            fullName: newUpdate.fullName, 
+            age: newUpdate.age,
+            gender: newUpdate.gender,
+            role: newUpdate.role,
+            address: newUpdate.address,
+            email: newUpdate.email,
+            social: newUpdate.social,
+            post: newUpdate.post,
+            time: newUpdate.createdAt
+        }
+        }
+
+)
+
+    } catch (error) {
+        return res.status(500).json(error)
+        
+    }
+}
+export const updateAvatar = async (req, res) => {
+    const image = req.body.img
+    try {
+        const id = req.userId
+        const transform = await cloudinary.v2.uploader.upload(image, {
+            folder: 'accountImg',
+            width: 110,
+            crop: 'scale'
+        })
+        const update = await account.findByIdAndUpdate(id, {
+            avatar: {
+                public_id: transform.public_id, 
+                url: transform.secure_url
+            }})
+        await update.save()
+        const newUpdate = await account.findById(id);
+        return res.status(200).json({
+            message:"Cập nhật thành công",
+        user: {
+            id:newUpdate._id, 
+            phone:newUpdate.phone, 
+            avatar: newUpdate.avatar.url, 
             fullName: newUpdate.fullName, 
             age: newUpdate.age,
             gender: newUpdate.gender,
@@ -60,7 +102,7 @@ export const login = async (req, res) => {
             const token = jwt.sign({
                 id:checkAccount._id, 
                 phone:checkAccount.phone, 
-                avatar: checkAccount.avatar, 
+                avatar: checkAccount.avatar.url, 
                 fullName: checkAccount.fullName, 
                 age: checkAccount.age,
                 gender: checkAccount.gender,
@@ -91,7 +133,6 @@ export const login = async (req, res) => {
 }
 export const register =  async (req, res) => {
     const newData = req.body
-    console.log(newData)
     try {
         let checkAccount = await account.findOne({ phone: newData.phone })
         if(checkAccount){
@@ -106,14 +147,14 @@ export const register =  async (req, res) => {
         return res.status(500).json(error)
     }
 }
-export const getUserLogin =async (req, res) => {
+export const getUserLogin = async (req, res) => {
     try {
         const userId = req.userId
         const user = await account.findById(userId)
         res.json({
                 id:user._id, 
                 phone:user.phone, 
-                avatar: user.avatar, 
+                avatar: user.avatar.url, 
                 fullName: user.fullName, 
                 age: user.age,
                 gender: user.gender,

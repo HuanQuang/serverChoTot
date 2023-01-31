@@ -9,10 +9,18 @@ const schema = new mongoose.Schema({
         type: String,
         required: true
     },
-    avatar: {
-        data: Buffer,
-        contentType: String
-    },
+    avatar: 
+        {
+            public_id: {
+                type: String,
+                require: true
+            },
+            url: {
+                type: String,
+                require: true
+            }
+        }
+    ,
     age: {
         type: Number,
     },
