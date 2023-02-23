@@ -1,8 +1,19 @@
 import mongoose from "mongoose";
 const schema = new mongoose.Schema({
-userId:{
+userId: {
     type: String,
-    require: true,
+    require: true
+},
+poster:{
+    fullName: {
+        type: String,
+    },
+    phone:{
+        type: Number,
+    },
+    avatar: {
+        type: String
+    }
 },
 type: {
     type: String,
@@ -24,8 +35,11 @@ information: {
 },
 other: {
     type: String
-}
-
+},
+img: {
+       type: Array
+    }
+,
 
 },
 {

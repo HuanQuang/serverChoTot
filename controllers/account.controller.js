@@ -166,6 +166,6 @@ export const getUserLogin = async (req, res) => {
                 time: user.createdAt
         })
     } catch (error) {
-        
+        res.status(500).json(error)
     }
 }
