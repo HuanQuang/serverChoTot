@@ -32,7 +32,8 @@ export const newPost = async (req, res) => {
             poster: {
                 fullName: poster.fullName,
                 phone:poster.phone,
-                avatar: poster.avatar.url
+                avatar: poster.avatar.url,
+                userId:userId
             },
             type: req.body.type,
             title: req.body.title,

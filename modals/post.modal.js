@@ -13,6 +13,9 @@ poster:{
     },
     avatar: {
         type: String
+    },
+    userId: {
+        type:String
     }
 },
 type: {
