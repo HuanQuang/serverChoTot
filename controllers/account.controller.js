@@ -169,3 +169,25 @@ export const getUserLogin = async (req, res) => {
         res.status(500).json(error)
     }
 }
+export const getAUser = async (req, res) => {
+    try {
+        const userId = req.params.userId
+        const user = await account.findById(userId)
+        res.json({
+                id:user._id, 
+                phone:user.phone, 
+                avatar: user.avatar.url, 
+                fullName: user.fullName, 
+                age: user.age,
+                gender: user.gender,
+                role: user.role,
+                address: user.address,
+                email: user.email,
+                social: user.social,
+                post: user.post,
+                time: user.createdAt
+        })
+    } catch (error) {
+        res.status(500).json(error)
+    }
+}
