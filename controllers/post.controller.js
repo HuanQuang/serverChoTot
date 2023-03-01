@@ -59,3 +59,17 @@ export const queryId = async (req, res) => {
         return res.status(500).json(error)
     }
 }
+export const checkLiked = async (req, res) => {
+    const postId = req.params.id
+    const userId = req.body.idUser
+    try {
+        const getPost = await post.findById(postId)
+        const check = await getPost.liked.find(id => id === userId)
+        if(check){
+            return res.status(200).json(true)
+        }else return res.status(200).json(false)
+
+    } catch (error) {
+        return res.status(500).json(error)       
+    }
+}

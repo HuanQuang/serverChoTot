@@ -43,7 +43,9 @@ img: {
        type: Array
     }
 ,
-
+liked: {
+    type: Array
+}
 },
 {
     timestamps: true
