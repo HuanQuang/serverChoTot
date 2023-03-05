@@ -11,6 +11,6 @@ account.delete('/:id', deleteAccount)
 account.put('/updateAvatar', isAuth,updateAvatar)
 account.post('/login', login)
 account.post('/', register)
-account.get('/me',isAuth, getUserLogin)
+account.post('/me',isAuth, getUserLogin)
 
 export default account

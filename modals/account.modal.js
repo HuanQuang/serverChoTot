@@ -45,7 +45,7 @@ const schema = new mongoose.Schema({
         },
     },
     post: {
-        type: Object
+        type: Array
     },
     role: {
         type: String
