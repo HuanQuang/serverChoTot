@@ -147,6 +147,8 @@ export const register =  async (req, res) => {
         return res.status(500).json(error)
     }
 }
+
+//Check token valid 
 export const getUserLogin = async (req, res) => {
     try {
         const userId = req.userId

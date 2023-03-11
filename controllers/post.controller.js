@@ -15,7 +15,7 @@ export const getPost = async (req, res) => {
 
 export const newPost = async (req, res) => {
     const image = req.body.img
-    const userId = req.body.userID
+    const userId = req.userId
     try {
         const poster = await account.findById(userId)
         const arr = []
@@ -63,8 +63,7 @@ export const queryId = async (req, res) => {
 // Check liked status this post
 export const checkLiked = async (req, res) => {
     const postId = req.params.id
-    const userId = req.body.idUser
-
+    const userId = req.userId
     try {
         const getPost = await post.findById(postId)
         const check = getPost.liked.find(id => id === userId)
@@ -80,14 +79,14 @@ export const checkLiked = async (req, res) => {
 // Handle like post and unLike
 export const LikePost = async (req, res) => {
     const postId = req.params.id
-    const userId = req.body.idUser
+    const userId = req.userId
     const checked = req.body.checked
     try {
         if(checked){
-            await post.findByIdAndUpdate(postId,{$pull:{liked: userId}})
+            await post.findByIdAndUpdate(postId,{$pull:{ liked: userId}})
             return res.status(200).json(false)
         }else{
-            await post.findByIdAndUpdate(postId,{$push:{liked: userId}})
+            await post.findByIdAndUpdate(postId,{$push:{ liked: userId}})
             return res.status(200).json(true)
         }
 
@@ -96,10 +95,33 @@ export const LikePost = async (req, res) => {
     }
 }
 
+// Hàm lấy danh sách tin mà user đã đăng
 export const getListfromUser = async(req,res) => {
     const userId = req.params.userId
     try {
         const list = await post.find({userId: userId})
+        return res.status(200).json(list)
+    } catch (error) {
+        return res.status(500).json(error)       
+    }
+}
+
+// Hàm tìm kiếm bằng từ khoá
+export const getListFromSearchKey = async (req,res) => {
+    const searchKey = req.params.searchKey
+    try {
+        const list = await post.find({$or: [ {title: new RegExp(searchKey, 'i')} , {type: new RegExp(searchKey, 'i') }]})
+        return res.status(200).json(list)
+    } catch (error) {
+        return res.status(500).json(error)       
+    }
+}
+
+// Hàm lấy danh sách tin đã lưu
+export const getListSaved = async (req,res) => {
+    const userId = req.userId
+    try {
+        const list = await post.find({liked: userId})
         console.log(list)
         return res.status(200).json(list)
     } catch (error) {
